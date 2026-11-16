@@ -1,0 +1,16 @@
+# target
+target/
+*.war
+*.jar
+*.class
+
+# IDE & OS files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.DS_Store
+Thumbs.db
+*.log
