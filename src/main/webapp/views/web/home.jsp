@@ -20,7 +20,6 @@
     background: radial-gradient(circle at 10% 0%, #eef2ff 0%, #f8fafc 45%, #fdf2f8 100%);
     min-height: 100vh;
   }
-  /* Hero Banner */
   .hero-banner {
     background: linear-gradient(125deg, #1e1b4b 0%, #4338ca 48%, #7c3aed 82%, #db2777 100%);
     border-radius: 24px;
@@ -113,8 +112,6 @@
     background: rgba(255, 255, 255, 0.26);
     transform: translateY(-2px);
   }
-
-  /* Category Cards */
   .cat-pill-card {
     background: #ffffff;
     border-radius: 18px;
@@ -155,10 +152,7 @@
     font-weight: 700;
     padding: 3px 9px;
     border-radius: 999px;
-    backdrop-filter: blur(4px);
   }
-
-  /* Filter Pill Buttons */
   .filter-chip {
     border: 1px solid #e2e8f0;
     background: #ffffff;
@@ -175,10 +169,7 @@
     color: #ffffff;
     border-color: transparent;
     box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
-    transform: translateY(-1px);
   }
-
-  /* Product Card */
   .product-card {
     background: #ffffff;
     border-radius: 20px;
@@ -196,7 +187,7 @@
     border-color: #c7d2fe;
   }
   .product-img-box {
-    height: 215px;
+    height: 205px;
     position: relative;
     overflow: hidden;
     background: #f8fafc;
@@ -220,7 +211,6 @@
     font-size: 0.76rem;
     padding: 4px 11px;
     border-radius: 999px;
-    box-shadow: 0 4px 10px rgba(244, 63, 94, 0.35);
   }
   .btn-wishlist {
     position: absolute;
@@ -236,7 +226,6 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
   .btn-wishlist.liked, .btn-wishlist:hover {
     color: #f43f5e;
@@ -267,9 +256,83 @@
     background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
     color: #fff;
     transform: translateY(-1px);
-    box-shadow: 0 6px 15px rgba(79, 70, 229, 0.35);
   }
-  /* Floating Cart Bar */
+  /* Video Card */
+  .video-card {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #f1f5f9;
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .video-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 38px -10px rgba(244, 63, 94, 0.22);
+    border-color: #fecdd3;
+  }
+  .video-thumb-wrap {
+    height: 175px;
+    position: relative;
+    overflow: hidden;
+    background: #0f172a;
+  }
+  .video-thumb-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.92;
+    transition: transform 0.45s ease;
+  }
+  .video-card:hover .video-thumb-wrap img {
+    transform: scale(1.08);
+  }
+  .play-overlay-btn {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.25);
+    transition: background 0.25s ease;
+  }
+  .video-card:hover .play-overlay-btn {
+    background: rgba(15, 23, 42, 0.42);
+  }
+  .play-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f43f5e 0%, #fb923c 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    box-shadow: 0 8px 20px rgba(244, 63, 94, 0.55);
+    transition: transform 0.25s ease;
+  }
+  .video-card:hover .play-circle {
+    transform: scale(1.14);
+  }
+  .video-title-link {
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.96rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s ease;
+  }
+  .video-title-link:hover {
+    color: #4f46e5;
+  }
   .floating-cart {
     position: fixed;
     bottom: 24px;
@@ -298,7 +361,6 @@
     padding: 2px 9px;
     border-radius: 999px;
   }
-  /* Toast Notification */
   .tz-toast {
     position: fixed;
     top: 82px;
@@ -323,7 +385,7 @@
 <body>
   <%@ include file="/common/web/topbar.jsp" %>
 
-  <!-- Toast Thông báo mượt mà -->
+  <!-- Toast Thông báo -->
   <div id="tzToast" class="tz-toast">
     <i class="fa fa-check-circle text-success fs-5"></i>
     <div>
@@ -344,14 +406,17 @@
             Xin chào, ${sessionScope.account != null ? sessionScope.account.fullName : 'Quý khách'}!
           </h1>
           <p class="mb-4 text-white-50 fs-6" style="max-width: 560px;">
-            Khám phá hệ sinh thái thiết bị công nghệ cao cấp từ Apple, Sony, Samsung với ưu đãi độc quyền dành riêng cho sinh viên HCMUTE.
+            Khám phá hệ sinh thái thiết bị công nghệ cao cấp cùng kênh Video đánh giá chuyên sâu từ Apple, Sony, Samsung dành riêng cho sinh viên HCMUTE.
           </p>
           <div class="d-flex flex-wrap gap-3">
             <a href="#featuredProducts" class="btn-cta-gold">
               <i class="fa fa-bag-shopping"></i> Mua sắm ngay
             </a>
-            <a href="${pageContext.request.contextPath}/admin/categories" class="btn-cta-light">
-              <i class="fa fa-sliders"></i> Quản lý danh mục
+            <a href="${pageContext.request.contextPath}/video" class="btn-cta-light">
+              <i class="fa fa-circle-play"></i> Xem tất cả Video
+            </a>
+            <a href="${pageContext.request.contextPath}/admin/videos" class="btn-cta-light">
+              <i class="fa fa-film"></i> Quản lý Video
             </a>
           </div>
         </div>
@@ -359,10 +424,8 @@
           <c:if test="${sessionScope.account != null}">
             <div class="profile-glass">
               <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-light border-opacity-25">
-                <div class="d-flex align-items-center gap-2">
-                  <span class="badge bg-warning text-dark fw-bold px-3 py-1 rounded-pill">Thành viên VIP</span>
-                </div>
-                <span class="small text-white-50">Tài khoản đã xác thực</span>
+                <span class="badge bg-warning text-dark fw-bold px-3 py-1 rounded-pill">Thành viên VIP</span>
+                <span class="small text-white-50">Đã kích hoạt OTP</span>
               </div>
               <div class="profile-row">
                 <i class="fa fa-user"></i>
@@ -386,7 +449,7 @@
       </div>
     </div>
 
-    <!-- Danh mục sản phẩm từ Database -->
+    <!-- Danh mục sản phẩm -->
     <div class="d-flex justify-content-between align-items-end mb-3 flex-wrap gap-2">
       <div>
         <h4 class="fw-bold mb-1">Danh mục sản phẩm</h4>
@@ -421,7 +484,68 @@
       </c:forEach>
     </div>
 
-    <!-- Khu vực Sản phẩm nổi bật có Tương tác Lọc & Tìm kiếm trực tiếp -->
+    <!-- 10 Video Mới Nhất trên Trang chủ (/home) -->
+    <div id="latestVideosSection" class="mb-5 pt-2">
+      <div class="d-flex justify-content-between align-items-end mb-3 flex-wrap gap-2">
+        <div>
+          <span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-1 fw-bold mb-2">
+            <i class="fa fa-circle-play me-1"></i> TECHZONE REVIEW CHANNEL
+          </span>
+          <h4 class="fw-bold mb-1">10 Video đánh giá công nghệ mới nhất</h4>
+          <p class="text-muted small mb-0">Bấm chuột vào tiêu đề video bất kỳ để xem chi tiết và phát trực tiếp</p>
+        </div>
+        <div class="d-flex gap-2">
+          <a href="${pageContext.request.contextPath}/video" class="btn btn-sm btn-primary rounded-pill px-3 fw-semibold">
+            <i class="fa fa-table-cells-large me-1"></i> Xem tất cả Video
+          </a>
+          <a href="${pageContext.request.contextPath}/admin/videos" class="btn btn-sm btn-outline-secondary rounded-pill px-3 fw-semibold">
+            <i class="fa fa-sliders me-1"></i> Quản lý Video
+          </a>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <c:forEach items="${top10Videos}" var="v" varStatus="st">
+          <div class="col-sm-6 col-lg-4 col-xl-3">
+            <div class="video-card">
+              <a href="${pageContext.request.contextPath}/video/detail?id=${v.videoId}" class="video-thumb-wrap d-block">
+                <img src="${pageContext.request.contextPath}/image?fname=${not empty v.poster ? v.poster : 'phone.jpg'}" alt="${v.title}">
+                <div class="play-overlay-btn">
+                  <div class="play-circle"><i class="fa fa-play ms-1"></i></div>
+                </div>
+                <span class="position-absolute top-0 start-0 m-2 badge bg-dark bg-opacity-75 rounded-pill px-2 py-1" style="font-size: 0.72rem;">
+                  #${st.index + 1} Mới nhất
+                </span>
+                <span class="position-absolute bottom-0 end-0 m-2 badge bg-danger rounded-pill px-2 py-1" style="font-size: 0.72rem;">
+                  <i class="fa fa-eye me-1"></i>${v.views} lượt xem
+                </span>
+              </a>
+              <div class="p-3 d-flex flex-column flex-grow-1 justify-content-between">
+                <div>
+                  <div class="text-primary fw-bold mb-1" style="font-size: 0.74rem;">
+                    ${v.category != null ? v.category.categoryname : 'Công nghệ'}
+                  </div>
+                  <!-- Bấm chuột vào tiêu đề của video để xem chi tiết & play video -->
+                  <h6 class="mb-2">
+                    <a href="${pageContext.request.contextPath}/video/detail?id=${v.videoId}" class="video-title-link">
+                      ${v.title}
+                    </a>
+                  </h6>
+                </div>
+                <div class="d-flex justify-content-between align-items-center pt-2 border-top text-muted" style="font-size: 0.78rem;">
+                  <span><i class="fa fa-user-circle me-1 text-primary"></i>${v.user != null ? v.user.fullName : 'Mai Anh Khoa'}</span>
+                  <a href="${pageContext.request.contextPath}/video/detail?id=${v.videoId}" class="text-danger fw-bold text-decoration-none">
+                    Phát ngay <i class="fa fa-play-circle"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </c:forEach>
+      </div>
+    </div>
+
+    <!-- Sản phẩm công nghệ nổi bật -->
     <div id="featuredProducts" class="pt-2">
       <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
         <div>
@@ -446,7 +570,7 @@
             <div class="product-img-box">
               <img src="${pageContext.request.contextPath}/image?fname=phone.jpg" alt="iPhone 16 Pro Max">
               <span class="badge-discount">-12%</span>
-              <button class="btn-wishlist" onclick="toggleWishlist(this)" title="Yêu thích"><i class="fa fa-heart"></i></button>
+              <button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fa fa-heart"></i></button>
             </div>
             <div class="p-3 d-flex flex-column flex-grow-1 justify-content-between">
               <div>
@@ -481,7 +605,7 @@
             <div class="product-img-box">
               <img src="${pageContext.request.contextPath}/image?fname=laptop.jpg" alt="MacBook Pro 14 M3">
               <span class="badge-discount">-10%</span>
-              <button class="btn-wishlist" onclick="toggleWishlist(this)" title="Yêu thích"><i class="fa fa-heart"></i></button>
+              <button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fa fa-heart"></i></button>
             </div>
             <div class="p-3 d-flex flex-column flex-grow-1 justify-content-between">
               <div>
@@ -516,7 +640,7 @@
             <div class="product-img-box">
               <img src="${pageContext.request.contextPath}/image?fname=ipad.jpg" alt="iPad Pro M4">
               <span class="badge-discount">-8%</span>
-              <button class="btn-wishlist" onclick="toggleWishlist(this)" title="Yêu thích"><i class="fa fa-heart"></i></button>
+              <button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fa fa-heart"></i></button>
             </div>
             <div class="p-3 d-flex flex-column flex-grow-1 justify-content-between">
               <div>
@@ -551,7 +675,7 @@
             <div class="product-img-box">
               <img src="${pageContext.request.contextPath}/image?fname=watch.jpg" alt="Apple Watch Ultra 2">
               <span class="badge-discount">-15%</span>
-              <button class="btn-wishlist" onclick="toggleWishlist(this)" title="Yêu thích"><i class="fa fa-heart"></i></button>
+              <button class="btn-wishlist" onclick="toggleWishlist(this)"><i class="fa fa-heart"></i></button>
             </div>
             <div class="p-3 d-flex flex-column flex-grow-1 justify-content-between">
               <div>
@@ -572,146 +696,6 @@
                     <i class="fa fa-cart-plus me-1"></i> Thêm vào giỏ
                   </button>
                   <button class="btn btn-light border rounded-3" onclick="quickView('Apple Watch Ultra 2 49mm Vỏ Titan', '20.490.000₫', 'watch.jpg', 'Khung viền Titanium chuẩn hàng không vũ trụ, màn hình 3000 nits, GPS băng tần kép chính xác tuyệt đối.')">
-                    <i class="fa fa-eye"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product 5 -->
-        <div class="col-sm-6 col-lg-4 col-xl-3 product-item" data-category="Tai nghe & Âm thanh" data-name="Tai nghe chống ồn Sony WH-1000XM5 Hi-Res Audio">
-          <div class="product-card">
-            <div class="product-img-box">
-              <img src="${pageContext.request.contextPath}/image?fname=audio.jpg" alt="Sony WH-1000XM5">
-              <span class="badge-discount">-18%</span>
-              <button class="btn-wishlist" onclick="toggleWishlist(this)" title="Yêu thích"><i class="fa fa-heart"></i></button>
-            </div>
-            <div class="p-3 d-flex flex-column flex-grow-1 justify-content-between">
-              <div>
-                <div class="text-primary fw-bold" style="font-size: 0.75rem;">Tai nghe & Âm thanh</div>
-                <h6 class="fw-bold mt-1 mb-2">Tai nghe chống ồn Sony WH-1000XM5</h6>
-                <div class="text-warning small mb-2">
-                  <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                  <span class="text-muted ms-1">4.9</span>
-                </div>
-              </div>
-              <div>
-                <div class="d-flex align-items-baseline gap-2 mb-3">
-                  <span class="product-price">6.990.000₫</span>
-                  <span class="product-old-price">8.490.000₫</span>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn-buy-now flex-grow-1" onclick="addToCart('Tai nghe Sony WH-1000XM5', '6.990.000₫')">
-                    <i class="fa fa-cart-plus me-1"></i> Thêm vào giỏ
-                  </button>
-                  <button class="btn btn-light border rounded-3" onclick="quickView('Tai nghe chống ồn Sony WH-1000XM5', '6.990.000₫', 'audio.jpg', 'Công nghệ chống ồn chủ động 8 micro hàng đầu thế giới, âm thanh chuẩn Hi-Res LDAC, thời lượng pin 30 giờ.')">
-                    <i class="fa fa-eye"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product 6 -->
-        <div class="col-sm-6 col-lg-4 col-xl-3 product-item" data-category="Máy ảnh kỹ thuật số" data-name="Máy ảnh Sony Alpha A7M4 Full-Frame Mirrorless">
-          <div class="product-card">
-            <div class="product-img-box">
-              <img src="${pageContext.request.contextPath}/image?fname=camera.jpg" alt="Sony Alpha A7 IV">
-              <span class="badge-discount">-9%</span>
-              <button class="btn-wishlist" onclick="toggleWishlist(this)" title="Yêu thích"><i class="fa fa-heart"></i></button>
-            </div>
-            <div class="p-3 d-flex flex-column flex-grow-1 justify-content-between">
-              <div>
-                <div class="text-primary fw-bold" style="font-size: 0.75rem;">Máy ảnh kỹ thuật số</div>
-                <h6 class="fw-bold mt-1 mb-2">Máy ảnh Sony Alpha A7 IV Full-Frame</h6>
-                <div class="text-warning small mb-2">
-                  <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                  <span class="text-muted ms-1">5.0</span>
-                </div>
-              </div>
-              <div>
-                <div class="d-flex align-items-baseline gap-2 mb-3">
-                  <span class="product-price">53.990.000₫</span>
-                  <span class="product-old-price">58.990.000₫</span>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn-buy-now flex-grow-1" onclick="addToCart('Máy ảnh Sony Alpha A7 IV', '53.990.000₫')">
-                    <i class="fa fa-cart-plus me-1"></i> Thêm vào giỏ
-                  </button>
-                  <button class="btn btn-light border rounded-3" onclick="quickView('Máy ảnh Sony Alpha A7 IV Full-Frame', '53.990.000₫', 'camera.jpg', 'Cảm biến Exmor R CMOS Full-Frame 33MP, quay video 4K 60p 10-bit 4:2:2, lấy nét tự động theo ánh mắt thời gian thực.')">
-                    <i class="fa fa-eye"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product 7 -->
-        <div class="col-sm-6 col-lg-4 col-xl-3 product-item" data-category="Điện thoại & Smartphone" data-name="Samsung Galaxy S24 Ultra 5G 12GB 256GB">
-          <div class="product-card">
-            <div class="product-img-box">
-              <img src="${pageContext.request.contextPath}/image?fname=abc.jpg" alt="Galaxy S24 Ultra">
-              <span class="badge-discount">-16%</span>
-              <button class="btn-wishlist" onclick="toggleWishlist(this)" title="Yêu thích"><i class="fa fa-heart"></i></button>
-            </div>
-            <div class="p-3 d-flex flex-column flex-grow-1 justify-content-between">
-              <div>
-                <div class="text-primary fw-bold" style="font-size: 0.75rem;">Điện thoại & Smartphone</div>
-                <h6 class="fw-bold mt-1 mb-2">Samsung Galaxy S24 Ultra 5G 256GB</h6>
-                <div class="text-warning small mb-2">
-                  <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                  <span class="text-muted ms-1">4.9</span>
-                </div>
-              </div>
-              <div>
-                <div class="d-flex align-items-baseline gap-2 mb-3">
-                  <span class="product-price">27.990.000₫</span>
-                  <span class="product-old-price">33.990.000₫</span>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn-buy-now flex-grow-1" onclick="addToCart('Samsung Galaxy S24 Ultra 5G', '27.990.000₫')">
-                    <i class="fa fa-cart-plus me-1"></i> Thêm vào giỏ
-                  </button>
-                  <button class="btn btn-light border rounded-3" onclick="quickView('Samsung Galaxy S24 Ultra 5G 256GB', '27.990.000₫', 'abc.jpg', 'Quyền năng Galaxy AI tích hợp bút S-Pen, khung viền Titanium bền bỉ cùng Camera mắt thần bóng đêm 200MP.')">
-                    <i class="fa fa-eye"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Product 8 -->
-        <div class="col-sm-6 col-lg-4 col-xl-3 product-item" data-category="Laptop & MacBook" data-name="MacBook Air 15 inch M3 16GB 512GB Midnight">
-          <div class="product-card">
-            <div class="product-img-box">
-              <img src="${pageContext.request.contextPath}/image?fname=laptop.jpg" alt="MacBook Air M3">
-              <span class="badge-discount">-11%</span>
-              <button class="btn-wishlist" onclick="toggleWishlist(this)" title="Yêu thích"><i class="fa fa-heart"></i></button>
-            </div>
-            <div class="p-3 d-flex flex-column flex-grow-1 justify-content-between">
-              <div>
-                <div class="text-primary fw-bold" style="font-size: 0.75rem;">Laptop & MacBook</div>
-                <h6 class="fw-bold mt-1 mb-2">MacBook Air 15 M3 16GB 512GB Midnight</h6>
-                <div class="text-warning small mb-2">
-                  <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                  <span class="text-muted ms-1">4.9</span>
-                </div>
-              </div>
-              <div>
-                <div class="d-flex align-items-baseline gap-2 mb-3">
-                  <span class="product-price">34.490.000₫</span>
-                  <span class="product-old-price">38.990.000₫</span>
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn-buy-now flex-grow-1" onclick="addToCart('MacBook Air 15 M3 16GB', '34.490.000₫')">
-                    <i class="fa fa-cart-plus me-1"></i> Thêm vào giỏ
-                  </button>
-                  <button class="btn btn-light border rounded-3" onclick="quickView('MacBook Air 15 M3 16GB 512GB', '34.490.000₫', 'laptop.jpg', 'Mỏng nhẹ ấn tượng cùng màn hình Liquid Retina 15.3 inch rộng rãi, RAM 16GB đa nhiệm mượt mà mọi tác vụ.')">
                     <i class="fa fa-eye"></i>
                   </button>
                 </div>

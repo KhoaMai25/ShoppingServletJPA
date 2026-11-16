@@ -28,7 +28,7 @@
   }
   .tz-brand {
     font-weight: 800;
-    font-size: 1.35rem;
+    font-size: 1.32rem;
     color: #ffffff !important;
     text-decoration: none;
     letter-spacing: -0.4px;
@@ -56,8 +56,8 @@
     color: rgba(255, 255, 255, 0.88) !important;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.92rem;
-    padding: 8px 15px;
+    font-size: 0.9rem;
+    padding: 8px 14px;
     border-radius: 10px;
     transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     display: inline-flex;
@@ -66,7 +66,7 @@
   }
   .tz-nav-link:hover, .tz-nav-link.active {
     color: #ffffff !important;
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.15);
     transform: translateY(-1px);
   }
   .tz-user-pill {
@@ -115,20 +115,26 @@
 </style>
 <div class="tz-navbar">
   <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
-    <div class="d-flex align-items-center gap-2 gap-md-3">
+    <div class="d-flex align-items-center gap-2">
       <a href="${pageContext.request.contextPath}/home" class="tz-brand">
         <span class="tz-brand-icon"><i class="fa fa-bolt"></i></span>
         <span>TechZone Store</span>
       </a>
-      <div class="d-none d-md-flex align-items-center gap-1 ms-2">
+      <div class="d-none d-lg-flex align-items-center gap-1 ms-2">
         <a href="${pageContext.request.contextPath}/home" class="tz-nav-link">
           <i class="fa fa-home"></i> Trang chủ
+        </a>
+        <a href="${pageContext.request.contextPath}/video" class="tz-nav-link">
+          <i class="fa fa-circle-play"></i> Kênh Video
         </a>
         <a href="${pageContext.request.contextPath}/admin/categories" class="tz-nav-link">
           <i class="fa fa-th-large"></i> Quản lý danh mục
         </a>
-        <a href="${pageContext.request.contextPath}/admin/category/add" class="tz-nav-link">
-          <i class="fa fa-plus-circle"></i> Thêm danh mục
+        <a href="${pageContext.request.contextPath}/admin/videos" class="tz-nav-link">
+          <i class="fa fa-film"></i> Quản lý video
+        </a>
+        <a href="${pageContext.request.contextPath}/admin/users" class="tz-nav-link">
+          <i class="fa fa-users-gear"></i> Tài khoản & Mật khẩu
         </a>
       </div>
     </div>
