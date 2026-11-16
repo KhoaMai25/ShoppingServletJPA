@@ -23,16 +23,11 @@ public class LogoutController extends HttpServlet {
             session.invalidate();
         }
 
-        Cookie[] cookies = req.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (Constant.COOKIE_REMEMBER.equals(cookie.getName())) {
-                    cookie.setMaxAge(0);
-                    cookie.setPath("/");
-                    resp.addCookie(cookie);
-                }
-            }
-        }
+        Cookie cookie = new Cookie(Constant.COOKIE_REMEMBER, "");
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        resp.addCookie(cookie);
+
         resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

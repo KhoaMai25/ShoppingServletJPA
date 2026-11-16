@@ -18,7 +18,7 @@
     flex-direction: column;
   }
   .auth-card {
-    max-width: 450px;
+    max-width: 460px;
     width: 100%;
     margin: auto;
     background: #ffffff;
@@ -55,8 +55,17 @@
         <p class="text-muted small mb-0">Đăng nhập vào hệ thống mua sắm TechZone Store</p>
       </div>
 
+      <c:if test="${not empty sessionScope.flashSuccess}">
+        <div class="alert alert-success py-2 small rounded-3">
+          <i class="fa fa-circle-check me-1"></i> ${sessionScope.flashSuccess}
+        </div>
+        <c:remove var="flashSuccess" scope="session" />
+      </c:if>
+
       <c:if test="${alert != null}">
-        <div class="alert alert-danger py-2 small rounded-3"><i class="fa fa-circle-exclamation me-1"></i> ${alert}</div>
+        <div class="alert alert-danger py-2 small rounded-3">
+          <i class="fa fa-circle-exclamation me-1"></i> ${alert}
+        </div>
       </c:if>
 
       <form action="${pageContext.request.contextPath}/login" method="post">
@@ -64,7 +73,9 @@
           <label class="form-label fw-semibold small">Tên đăng nhập</label>
           <div class="input-group">
             <span class="input-group-text bg-light"><i class="fa fa-user text-muted"></i></span>
-            <input type="text" id="usernameInput" name="username" class="form-control" value="AnhPha" required>
+            <input type="text" id="usernameInput" name="username" class="form-control"
+                   value="${not empty sessionScope.resetUsername ? sessionScope.resetUsername : ''}"
+                   placeholder="Nhập tên đăng nhập hoặc email" required>
           </div>
         </div>
 
@@ -72,21 +83,28 @@
           <label class="form-label fw-semibold small">Mật khẩu</label>
           <div class="input-group">
             <span class="input-group-text bg-light"><i class="fa fa-lock text-muted"></i></span>
-            <input type="password" id="passwordInput" name="password" class="form-control" value="123456" required>
+            <input type="password" id="passwordInput" name="password" class="form-control"
+                   placeholder="Nhập mật khẩu" required>
           </div>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-4 small">
           <div class="form-check">
-            <input type="checkbox" name="remember" class="form-check-input" id="rememberMe" checked>
+            <input type="checkbox" name="remember" class="form-check-input" id="rememberMe">
             <label class="form-check-label text-muted" for="rememberMe">Duy trì đăng nhập</label>
           </div>
-          <a href="${pageContext.request.contextPath}/register" class="text-decoration-none fw-semibold">Tạo tài khoản mới</a>
+          <a href="${pageContext.request.contextPath}/forgot-password" class="text-decoration-none fw-semibold text-danger">
+            <i class="fa fa-key me-1"></i> Quên mật khẩu?
+          </a>
         </div>
 
-        <button type="submit" class="btn-auth w-100">
+        <button type="submit" class="btn-auth w-100 mb-3">
           <i class="fa fa-right-to-bracket me-1"></i> Đăng nhập ngay
         </button>
+
+        <div class="text-center small text-muted">
+          Chưa có tài khoản? <a href="${pageContext.request.contextPath}/register" class="text-decoration-none fw-bold text-primary">Đăng ký tài khoản mới</a>
+        </div>
       </form>
     </div>
   </div>

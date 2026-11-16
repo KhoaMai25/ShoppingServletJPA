@@ -27,6 +27,22 @@ public class UserDao implements IUserDao {
     }
 
     @Override
+    public User findByEmail(String email) {
+        EntityManager enma = JpaConfig.getEntityManager();
+        try {
+            TypedQuery<User> query = enma.createQuery("SELECT u FROM User u WHERE LOWER(u.email) = LOWER(:email)", User.class);
+            query.setParameter("email", email != null ? email.trim() : "");
+            List<User> list = query.getResultList();
+            if (list != null && !list.isEmpty()) {
+                return list.get(0);
+            }
+            return null;
+        } finally {
+            enma.close();
+        }
+    }
+
+    @Override
     public void insert(User user) {
         EntityManager enma = JpaConfig.getEntityManager();
         EntityTransaction trans = enma.getTransaction();
@@ -46,11 +62,30 @@ public class UserDao implements IUserDao {
     }
 
     @Override
+    public void update(User user) {
+        EntityManager enma = JpaConfig.getEntityManager();
+        EntityTransaction trans = enma.getTransaction();
+        try {
+            trans.begin();
+            enma.merge(user);
+            trans.commit();
+        } catch (Exception e) {
+            if (trans.isActive()) {
+                trans.rollback();
+            }
+            e.printStackTrace();
+            throw e;
+        } finally {
+            enma.close();
+        }
+    }
+
+    @Override
     public boolean checkExistEmail(String email) {
         EntityManager enma = JpaConfig.getEntityManager();
         try {
-            TypedQuery<Long> query = enma.createQuery("SELECT count(u) FROM User u WHERE u.email = :email", Long.class);
-            query.setParameter("email", email);
+            TypedQuery<Long> query = enma.createQuery("SELECT count(u) FROM User u WHERE LOWER(u.email) = LOWER(:email)", Long.class);
+            query.setParameter("email", email != null ? email.trim() : "");
             Long count = query.getSingleResult();
             return count != null && count > 0;
         } finally {
@@ -62,8 +97,8 @@ public class UserDao implements IUserDao {
     public boolean checkExistUsername(String username) {
         EntityManager enma = JpaConfig.getEntityManager();
         try {
-            TypedQuery<Long> query = enma.createQuery("SELECT count(u) FROM User u WHERE u.userName = :uname", Long.class);
-            query.setParameter("uname", username);
+            TypedQuery<Long> query = enma.createQuery("SELECT count(u) FROM User u WHERE LOWER(u.userName) = LOWER(:uname)", Long.class);
+            query.setParameter("uname", username != null ? username.trim() : "");
             Long count = query.getSingleResult();
             return count != null && count > 0;
         } finally {
@@ -79,7 +114,7 @@ public class UserDao implements IUserDao {
         EntityManager enma = JpaConfig.getEntityManager();
         try {
             TypedQuery<Long> query = enma.createQuery("SELECT count(u) FROM User u WHERE u.phone = :phone", Long.class);
-            query.setParameter("phone", phone);
+            query.setParameter("phone", phone.trim());
             Long count = query.getSingleResult();
             return count != null && count > 0;
         } finally {
