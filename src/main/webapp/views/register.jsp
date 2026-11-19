@@ -18,7 +18,7 @@
     flex-direction: column;
   }
   .auth-card {
-    max-width: 520px;
+    max-width: 540px;
     width: 100%;
     margin: auto;
     background: #ffffff;
@@ -52,30 +52,50 @@
       </div>
 
       <c:if test="${alert != null}">
-        <div class="alert alert-danger py-2 small rounded-3">${alert}</div>
+        <div class="alert alert-danger py-2 small rounded-3"><i class="fa fa-circle-exclamation me-1"></i> ${alert}</div>
       </c:if>
 
-      <form action="${pageContext.request.contextPath}/register" method="post">
+      <form action="${pageContext.request.contextPath}/register" method="post" class="needs-validation" novalidate>
         <div class="row g-3">
           <div class="col-md-6">
             <label class="form-label fw-semibold small">Tên đăng nhập</label>
-            <input type="text" name="username" class="form-control" placeholder="AnhPha" required>
+            <input type="text" name="username" class="form-control ${not empty errors.username ? 'is-invalid' : ''}"
+                   value="${oldUsername}" placeholder="AnhPha" minlength="3" maxlength="50" required>
+            <div class="invalid-feedback">
+              ${not empty errors.username ? errors.username : 'Tên đăng nhập phải từ 3 đến 50 ký tự.'}
+            </div>
           </div>
           <div class="col-md-6">
             <label class="form-label fw-semibold small">Mật khẩu</label>
-            <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            <input type="password" name="password" class="form-control ${not empty errors.password ? 'is-invalid' : ''}"
+                   placeholder="Tối thiểu 6 ký tự" minlength="6" required>
+            <div class="invalid-feedback">
+              ${not empty errors.password ? errors.password : 'Mật khẩu phải có tối thiểu 6 ký tự.'}
+            </div>
           </div>
           <div class="col-12">
             <label class="form-label fw-semibold small">Họ và tên</label>
-            <input type="text" name="fullname" class="form-control" placeholder="Mai Anh Khoa" required>
+            <input type="text" name="fullname" class="form-control ${not empty errors.fullname ? 'is-invalid' : ''}"
+                   value="${oldFullname}" placeholder="Mai Anh Khoa" minlength="2" required>
+            <div class="invalid-feedback">
+              ${not empty errors.fullname ? errors.fullname : 'Vui lòng nhập họ và tên hợp lệ.'}
+            </div>
           </div>
           <div class="col-md-6">
             <label class="form-label fw-semibold small">Email liên hệ</label>
-            <input type="email" name="email" class="form-control" placeholder="24110027@student.hcmute.edu.vn" required>
+            <input type="email" name="email" class="form-control ${not empty errors.email ? 'is-invalid' : ''}"
+                   value="${oldEmail}" placeholder="24110027@student.hcmute.edu.vn" required>
+            <div class="invalid-feedback">
+              ${not empty errors.email ? errors.email : 'Vui lòng nhập đúng định dạng địa chỉ Email.'}
+            </div>
           </div>
           <div class="col-md-6">
             <label class="form-label fw-semibold small">Số điện thoại</label>
-            <input type="text" name="phone" class="form-control" placeholder="0837707462" required>
+            <input type="text" name="phone" class="form-control ${not empty errors.phone ? 'is-invalid' : ''}"
+                   value="${oldPhone}" placeholder="0837707462" pattern="^(0|\+84)[0-9]{9,10}$" required>
+            <div class="invalid-feedback">
+              ${not empty errors.phone ? errors.phone : 'Số điện thoại phải gồm 10-11 chữ số bắt đầu bằng 0.'}
+            </div>
           </div>
         </div>
         <button type="submit" class="btn-auth w-100 mt-4">
@@ -84,5 +104,20 @@
       </form>
     </div>
   </div>
+  <script>
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+  </script>
 </body>
 </html>
