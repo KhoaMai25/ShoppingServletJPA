@@ -36,15 +36,24 @@
     <div class="form-card">
       <div class="form-card-header">
         <h4 class="fw-bold mb-1"><i class="fa fa-pen-to-square me-2"></i>Cập nhật danh mục sản phẩm</h4>
-        <p class="mb-0 text-white-50 small">Chỉnh sửa thông tin và hình ảnh hiển thị của danh mục #CAT0${cate.cateid}</p>
+        <p class="mb-0 text-white-50 small">Chỉnh sửa thông tin và hình ảnh hiển thị của danh mục #CAT0${cate.categoryid}</p>
       </div>
       <div class="p-4 p-md-5">
-        <form action="${pageContext.request.contextPath}/admin/category/update" method="post" enctype="multipart/form-data">
+        <c:if test="${not empty alert}">
+          <div class="alert alert-danger py-2 small rounded-3"><i class="fa fa-circle-exclamation me-1"></i> ${alert}</div>
+        </c:if>
+
+        <form action="${pageContext.request.contextPath}/admin/category/update" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
           <input type="hidden" name="categoryid" value="${cate.categoryid}">
 
           <div class="mb-4">
             <label class="form-label fw-bold">Tên danh mục sản phẩm</label>
-            <input type="text" name="categoryname" value="${cate.categoryname}" class="form-control form-control-lg rounded-3" required>
+            <input type="text" name="categoryname" value="${cate.categoryname}"
+                   class="form-control form-control-lg rounded-3 ${not empty errors.categoryname ? 'is-invalid' : ''}"
+                   minlength="2" maxlength="255" required>
+            <div class="invalid-feedback">
+              ${not empty errors.categoryname ? errors.categoryname : 'Tên danh mục không được để trống và phải từ 2 ký tự trở lên.'}
+            </div>
           </div>
 
           <div class="mb-4">
@@ -84,6 +93,19 @@
         reader.readAsDataURL(input.files[0]);
       }
     }
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
   </script>
 </body>
 </html>

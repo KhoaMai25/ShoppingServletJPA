@@ -15,10 +15,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import vn.iotstar.entity.Category;
 import vn.iotstar.service.ICategoryService;
 import vn.iotstar.service.impl.CategoryServiceImpl;
 import vn.iotstar.util.Constant;
+import vn.iotstar.util.ValidationUtils;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,
@@ -126,8 +128,17 @@ public class CategoryController extends HttpServlet {
             int status = (statusParam != null && !statusParam.isEmpty()) ? Integer.parseInt(statusParam) : 1;
             String images = req.getParameter("images");
 
+            Map<String, String> errors = ValidationUtils.validateCategoryForm(categoryname);
+            if (!errors.isEmpty()) {
+                req.setAttribute("errors", errors);
+                req.setAttribute("oldCategoryname", categoryname);
+                req.setAttribute("alert", errors.get("categoryname"));
+                req.getRequestDispatcher("/views/admin/category-add.jsp").forward(req, resp);
+                return;
+            }
+
             Category category = new Category();
-            category.setCategoryname(categoryname);
+            category.setCategoryname(categoryname.trim());
             category.setStatus(status);
 
             String fname = "";
@@ -159,7 +170,7 @@ public class CategoryController extends HttpServlet {
             }
 
             cateService.insert(category);
-            req.getSession().setAttribute("flashMsg", "Đã thêm mới danh mục \"" + categoryname + "\" thành công!");
+            req.getSession().setAttribute("flashMsg", "Đã thêm mới danh mục \"" + category.getCategoryname() + "\" thành công!");
             resp.sendRedirect(req.getContextPath() + "/admin/categories");
         }
 
@@ -175,8 +186,18 @@ public class CategoryController extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/admin/categories");
                 return;
             }
+
+            Map<String, String> errors = ValidationUtils.validateCategoryForm(categoryname);
+            if (!errors.isEmpty()) {
+                req.setAttribute("errors", errors);
+                req.setAttribute("cate", category);
+                req.setAttribute("alert", errors.get("categoryname"));
+                req.getRequestDispatcher("/views/admin/category-edit.jsp").forward(req, resp);
+                return;
+            }
+
             String fileold = category.getImages();
-            category.setCategoryname(categoryname);
+            category.setCategoryname(categoryname.trim());
             category.setStatus(status);
 
             String fname = "";
@@ -211,7 +232,7 @@ public class CategoryController extends HttpServlet {
             }
 
             cateService.update(category);
-            req.getSession().setAttribute("flashMsg", "Đã cập nhật danh mục \"" + categoryname + "\" thành công!");
+            req.getSession().setAttribute("flashMsg", "Đã cập nhật danh mục \"" + category.getCategoryname() + "\" thành công!");
             resp.sendRedirect(req.getContextPath() + "/admin/categories");
         }
     }
