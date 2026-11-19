@@ -11,10 +11,12 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import vn.iotstar.entity.User;
 import vn.iotstar.service.IUserService;
 import vn.iotstar.service.impl.UserServiceImpl;
 import vn.iotstar.util.Constant;
+import vn.iotstar.util.ValidationUtils;
 
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/login")
@@ -71,8 +73,11 @@ public class LoginController extends HttpServlet {
         String password = req.getParameter("password");
         boolean isRememberMe = "on".equals(req.getParameter("remember"));
 
-        if (username == null || password == null || username.trim().isEmpty() || password.trim().isEmpty()) {
-            req.setAttribute("alert", "Tài khoản hoặc mật khẩu không được để trống!");
+        Map<String, String> errors = ValidationUtils.validateLogin(username, password);
+        if (!errors.isEmpty()) {
+            req.setAttribute("errors", errors);
+            req.setAttribute("oldUsername", username);
+            req.setAttribute("alert", "Vui lòng kiểm tra lại thông tin đăng nhập!");
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
             return;
         }
@@ -99,6 +104,7 @@ public class LoginController extends HttpServlet {
             }
             resp.sendRedirect(req.getContextPath() + "/waiting");
         } else {
+            req.setAttribute("oldUsername", username);
             req.setAttribute("alert", "Tài khoản hoặc mật khẩu không đúng!");
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
         }

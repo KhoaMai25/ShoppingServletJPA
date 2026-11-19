@@ -68,23 +68,31 @@
         </div>
       </c:if>
 
-      <form action="${pageContext.request.contextPath}/login" method="post">
+      <form action="${pageContext.request.contextPath}/login" method="post" class="needs-validation" novalidate>
         <div class="mb-3">
-          <label class="form-label fw-semibold small">Tên đăng nhập</label>
-          <div class="input-group">
+          <label class="form-label fw-semibold small">Tên đăng nhập hoặc Email</label>
+          <div class="input-group has-validation">
             <span class="input-group-text bg-light"><i class="fa fa-user text-muted"></i></span>
-            <input type="text" id="usernameInput" name="username" class="form-control"
-                   value="${not empty sessionScope.resetUsername ? sessionScope.resetUsername : ''}"
-                   placeholder="Nhập tên đăng nhập hoặc email" required>
+            <input type="text" id="usernameInput" name="username"
+                   class="form-control ${not empty errors.username ? 'is-invalid' : ''}"
+                   value="${not empty oldUsername ? oldUsername : (not empty sessionScope.resetUsername ? sessionScope.resetUsername : '')}"
+                   placeholder="Nhập tên đăng nhập hoặc email" minlength="3" required>
+            <div class="invalid-feedback">
+              ${not empty errors.username ? errors.username : 'Vui lòng nhập tên đăng nhập hoặc email có ít nhất 3 ký tự.'}
+            </div>
           </div>
         </div>
 
         <div class="mb-3">
           <label class="form-label fw-semibold small">Mật khẩu</label>
-          <div class="input-group">
+          <div class="input-group has-validation">
             <span class="input-group-text bg-light"><i class="fa fa-lock text-muted"></i></span>
-            <input type="password" id="passwordInput" name="password" class="form-control"
-                   placeholder="Nhập mật khẩu" required>
+            <input type="password" id="passwordInput" name="password"
+                   class="form-control ${not empty errors.password ? 'is-invalid' : ''}"
+                   placeholder="Nhập mật khẩu từ 6 ký tự" minlength="6" required>
+            <div class="invalid-feedback">
+              ${not empty errors.password ? errors.password : 'Mật khẩu không được để trống và phải từ 6 ký tự trở lên.'}
+            </div>
           </div>
         </div>
 
@@ -108,5 +116,20 @@
       </form>
     </div>
   </div>
+  <script>
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+  </script>
 </body>
 </html>
