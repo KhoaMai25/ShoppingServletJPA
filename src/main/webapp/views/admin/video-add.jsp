@@ -52,15 +52,28 @@
         <p class="mb-0 text-white-50 small">Hỗ trợ tải file Poster & Video MP4 qua Multipart Servlet</p>
       </div>
       <div class="p-4 p-md-5">
-        <form action="${pageContext.request.contextPath}/admin/video/insert" method="post" enctype="multipart/form-data">
+        <c:if test="${not empty alert}">
+          <div class="alert alert-danger py-2 small rounded-3"><i class="fa fa-circle-exclamation me-1"></i> ${alert}</div>
+        </c:if>
+
+        <form action="${pageContext.request.contextPath}/admin/video/insert" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
           <div class="row g-3">
             <div class="col-md-4">
               <label class="form-label fw-bold">Mã Video</label>
-              <input type="text" name="videoId" class="form-control" value="VID13" required>
+              <input type="text" name="videoId" value="${not empty oldVideoId ? oldVideoId : 'VID13'}"
+                     class="form-control ${not empty errors.videoId ? 'is-invalid' : ''}" minlength="2" maxlength="50" required>
+              <div class="invalid-feedback">
+                ${not empty errors.videoId ? errors.videoId : 'Mã Video phải từ 2 đến 50 ký tự.'}
+              </div>
             </div>
             <div class="col-md-8">
               <label class="form-label fw-bold">Tiêu đề Video</label>
-              <input type="text" name="title" class="form-control" placeholder="Ví dụ: Đánh giá chi tiết MacBook Pro M4 Max" required>
+              <input type="text" name="title" value="${oldTitle}"
+                     class="form-control ${not empty errors.title ? 'is-invalid' : ''}"
+                     placeholder="Ví dụ: Đánh giá chi tiết MacBook Pro M4 Max" minlength="5" required>
+              <div class="invalid-feedback">
+                ${not empty errors.title ? errors.title : 'Tiêu đề Video phải có ít nhất 5 ký tự.'}
+              </div>
             </div>
 
             <div class="col-md-6">
@@ -74,7 +87,11 @@
 
             <div class="col-md-3">
               <label class="form-label fw-bold">Lượt xem ban đầu</label>
-              <input type="number" name="views" class="form-control" value="250">
+              <input type="number" name="views" value="${not empty oldViews ? oldViews : '250'}"
+                     class="form-control ${not empty errors.views ? 'is-invalid' : ''}" min="0" required>
+              <div class="invalid-feedback">
+                ${not empty errors.views ? errors.views : 'Số lượt xem phải từ 0 trở lên.'}
+              </div>
             </div>
 
             <div class="col-md-3">
@@ -104,8 +121,8 @@
             </div>
 
             <div class="col-md-6">
-              <label class="form-label fw-bold">Đường dẫn phát Video MP4</label>
-              <input type="text" name="videoUrl" class="form-control" value="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4">
+              <label class="form-label fw-bold">Tệp phát Video MP4</label>
+              <input type="text" name="videoUrl" class="form-control" value="tech_review.mp4">
             </div>
 
             <div class="col-md-6">
@@ -115,7 +132,11 @@
 
             <div class="col-12">
               <label class="form-label fw-bold">Mô tả chi tiết nội dung Video</label>
-              <textarea name="description" rows="3" class="form-control" placeholder="Nhập mô tả đánh giá chi tiết sản phẩm...">Video đánh giá thực tế thiết kế, hiệu năng và thời lượng pin chính hãng tại TechZone Store.</textarea>
+              <textarea name="description" rows="3" class="form-control ${not empty errors.description ? 'is-invalid' : ''}"
+                        minlength="10" required placeholder="Nhập mô tả đánh giá chi tiết sản phẩm...">${not empty oldDescription ? oldDescription : 'Video đánh giá thực tế thiết kế, hiệu năng và thời lượng pin chính hãng tại TechZone Store.'}</textarea>
+              <div class="invalid-feedback">
+                ${not empty errors.description ? errors.description : 'Mô tả Video phải có ít nhất 10 ký tự.'}
+              </div>
             </div>
           </div>
 
@@ -137,6 +158,19 @@
       el.classList.add('active');
     }
     function previewPoster(input) {}
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
   </script>
 </body>
 </html>

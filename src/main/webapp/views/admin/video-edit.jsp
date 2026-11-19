@@ -39,12 +39,20 @@
         <p class="mb-0 text-white-50 small">Chỉnh sửa tiêu đề, danh mục, trạng thái và tệp đa phương tiện</p>
       </div>
       <div class="p-4 p-md-5">
-        <form action="${pageContext.request.contextPath}/admin/video/update" method="post" enctype="multipart/form-data">
+        <c:if test="${not empty alert}">
+          <div class="alert alert-danger py-2 small rounded-3"><i class="fa fa-circle-exclamation me-1"></i> ${alert}</div>
+        </c:if>
+
+        <form action="${pageContext.request.contextPath}/admin/video/update" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
           <input type="hidden" name="videoId" value="${video.videoId}">
           <div class="row g-3">
             <div class="col-12">
               <label class="form-label fw-bold">Tiêu đề Video</label>
-              <input type="text" name="title" value="${video.title}" class="form-control" required>
+              <input type="text" name="title" value="${video.title}"
+                     class="form-control ${not empty errors.title ? 'is-invalid' : ''}" minlength="5" required>
+              <div class="invalid-feedback">
+                ${not empty errors.title ? errors.title : 'Tiêu đề Video phải có ít nhất 5 ký tự.'}
+              </div>
             </div>
 
             <div class="col-md-6">
@@ -60,7 +68,11 @@
 
             <div class="col-md-3">
               <label class="form-label fw-bold">Lượt xem</label>
-              <input type="number" name="views" value="${video.views}" class="form-control">
+              <input type="number" name="views" value="${video.views}"
+                     class="form-control ${not empty errors.views ? 'is-invalid' : ''}" min="0" required>
+              <div class="invalid-feedback">
+                ${not empty errors.views ? errors.views : 'Số lượt xem phải từ 0 trở lên.'}
+              </div>
             </div>
 
             <div class="col-md-3">
@@ -78,12 +90,16 @@
 
             <div class="col-md-6">
               <label class="form-label fw-bold">Đường dẫn phát Video MP4</label>
-              <input type="text" name="videoUrl" value="${video.videoUrl}" class="form-control">
+              <input type="text" name="videoUrl" value="${video.videoUrl}" class="form-control" required>
             </div>
 
             <div class="col-12">
               <label class="form-label fw-bold">Mô tả chi tiết</label>
-              <textarea name="description" rows="3" class="form-control">${video.description}</textarea>
+              <textarea name="description" rows="3" class="form-control ${not empty errors.description ? 'is-invalid' : ''}"
+                        minlength="10" required>${video.description}</textarea>
+              <div class="invalid-feedback">
+                ${not empty errors.description ? errors.description : 'Mô tả Video phải có ít nhất 10 ký tự.'}
+              </div>
             </div>
           </div>
 
@@ -97,5 +113,20 @@
       </div>
     </div>
   </div>
+  <script>
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+  </script>
 </body>
 </html>

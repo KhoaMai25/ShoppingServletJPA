@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import vn.iotstar.entity.Category;
 import vn.iotstar.entity.User;
 import vn.iotstar.entity.Video;
@@ -23,6 +24,7 @@ import vn.iotstar.service.impl.CategoryServiceImpl;
 import vn.iotstar.service.impl.UserServiceImpl;
 import vn.iotstar.service.impl.VideoServiceImpl;
 import vn.iotstar.util.Constant;
+import vn.iotstar.util.ValidationUtils;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,
@@ -101,13 +103,27 @@ public class VideoController extends HttpServlet {
 
         if (url.contains("/admin/video/insert")) {
             String videoId = req.getParameter("videoId");
-            if (videoId == null || videoId.trim().isEmpty()) {
-                videoId = "VID" + (System.currentTimeMillis() % 100000);
-            }
             String title = req.getParameter("title");
             String description = req.getParameter("description");
             String viewsStr = req.getParameter("views");
-            int views = (viewsStr != null && !viewsStr.isEmpty()) ? Integer.parseInt(viewsStr) : 120;
+
+            Map<String, String> errors = ValidationUtils.validateVideoForm(videoId, title, description, viewsStr);
+            if (videoId != null && !videoId.trim().isEmpty() && videoService.findById(videoId.trim()) != null) {
+                errors.put("videoId", "Mã Video này đã tồn tại trên hệ thống.");
+            }
+            if (!errors.isEmpty()) {
+                req.setAttribute("errors", errors);
+                req.setAttribute("oldVideoId", videoId);
+                req.setAttribute("oldTitle", title);
+                req.setAttribute("oldDescription", description);
+                req.setAttribute("oldViews", viewsStr);
+                req.setAttribute("listcate", cateService.findAll());
+                req.setAttribute("alert", "Vui lòng kiểm tra lại thông tin Video!");
+                req.getRequestDispatcher("/views/admin/video-add.jsp").forward(req, resp);
+                return;
+            }
+
+            int views = (viewsStr != null && !viewsStr.isEmpty()) ? Integer.parseInt(viewsStr.trim()) : 120;
             String activeStr = req.getParameter("active");
             int active = (activeStr != null && !activeStr.isEmpty()) ? Integer.parseInt(activeStr) : 1;
             String categoryIdStr = req.getParameter("categoryid");
@@ -135,7 +151,7 @@ public class VideoController extends HttpServlet {
 
             String videoUrl = req.getParameter("videoUrl");
             if (videoUrl == null || videoUrl.isBlank()) {
-                videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+                videoUrl = "tech_review.mp4";
             }
 
             try {
@@ -146,17 +162,17 @@ public class VideoController extends HttpServlet {
                     String ext = dot >= 0 ? submitted.substring(dot + 1) : "mp4";
                     String savedVid = "video_" + System.currentTimeMillis() + "." + ext;
                     videoPart.write(Constant.DIR + File.separator + savedVid);
-                    videoUrl = req.getContextPath() + "/image?fname=" + savedVid;
+                    videoUrl = savedVid;
                 }
             } catch (Exception ignored) {
             }
 
             Video video = new Video(
                     videoId.trim(),
-                    title,
+                    title.trim(),
                     poster,
                     views,
-                    description,
+                    description.trim(),
                     active,
                     category,
                     currentUser,
@@ -164,7 +180,7 @@ public class VideoController extends HttpServlet {
                     new Timestamp(System.currentTimeMillis())
             );
             videoService.insert(video);
-            req.getSession().setAttribute("flashVideoMsg", "Đã thêm mới video \"" + title + "\" thành công!");
+            req.getSession().setAttribute("flashVideoMsg", "Đã thêm mới video \"" + video.getTitle() + "\" thành công!");
             resp.sendRedirect(req.getContextPath() + "/admin/videos");
             return;
         }
@@ -177,11 +193,24 @@ public class VideoController extends HttpServlet {
                 return;
             }
 
-            video.setTitle(req.getParameter("title"));
-            video.setDescription(req.getParameter("description"));
+            String title = req.getParameter("title");
+            String description = req.getParameter("description");
             String viewsStr = req.getParameter("views");
+
+            Map<String, String> errors = ValidationUtils.validateVideoForm(videoId, title, description, viewsStr);
+            if (!errors.isEmpty()) {
+                req.setAttribute("errors", errors);
+                req.setAttribute("video", video);
+                req.setAttribute("listcate", cateService.findAll());
+                req.setAttribute("alert", "Vui lòng kiểm tra lại thông tin Video!");
+                req.getRequestDispatcher("/views/admin/video-edit.jsp").forward(req, resp);
+                return;
+            }
+
+            video.setTitle(title.trim());
+            video.setDescription(description.trim());
             if (viewsStr != null && !viewsStr.isEmpty()) {
-                video.setViews(Integer.parseInt(viewsStr));
+                video.setViews(Integer.parseInt(viewsStr.trim()));
             }
             String activeStr = req.getParameter("active");
             if (activeStr != null && !activeStr.isEmpty()) {
@@ -226,7 +255,7 @@ public class VideoController extends HttpServlet {
                     String ext = dot >= 0 ? submitted.substring(dot + 1) : "mp4";
                     String savedVid = "video_" + System.currentTimeMillis() + "." + ext;
                     videoPart.write(Constant.DIR + File.separator + savedVid);
-                    video.setVideoUrl(req.getContextPath() + "/image?fname=" + savedVid);
+                    video.setVideoUrl(savedVid);
                 }
             } catch (Exception ignored) {
             }
