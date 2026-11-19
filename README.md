@@ -23,6 +23,10 @@ Dự án xây dựng hệ thống thương mại điện tử & kênh Video đá
      - **4.3. Hiển thị tất cả videos của user và phân trang 6 sản phẩm/trang trên URL `/video`**.
      - **4.4. Hiển thị chi tiết và phát (play) 01 video (`/video/detail?id=...`)** khi bấm chuột vào tiêu đề của video trên `/home` và `/video` (hỗ trợ streaming `HTTP 206 Partial Content`).
      - **4.5. Upload file bằng Multipart (`@MultipartConfig`)**: Tải ảnh đại diện danh mục, Poster video, tệp MP4 và servlet mẫu `/multiPartServlet`.
+  5. **Cấu hình SiteMesh Decorator 3 với Template Bootstrap 5 (`sitemesh3.xml`, `web.jsp`, `admin.jsp`)**:
+     - Quản lý bố cục giao diện đồng nhất với `ConfigurableSiteMeshFilter` (`header.jsp`, `topbar.jsp`, `footer.jsp`).
+  6. **Validation toàn diện cho tất cả các FORM (`login`, `register`, `forgetpassword`, `insert`, `edit`)**:
+     - Kiểm tra hợp lệ dữ liệu cả phía Server (`ValidationUtils` & Jakarta Bean Validation) và phía Client (`Bootstrap 5 Form Validation`).
 
 ---
 
