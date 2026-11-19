@@ -66,7 +66,6 @@
 <body>
   <%@ include file="/common/web/topbar.jsp" %>
 
-  <!-- Thông báo Toast tự động biến mất sau vài giây -->
   <c:if test="${not empty sessionScope.otpSentToast}">
     <div id="resetToast" class="tz-floating-toast">
       <i class="fa fa-circle-check text-success fs-5"></i>
@@ -91,20 +90,35 @@
         <div class="alert alert-danger py-2 small rounded-3"><i class="fa fa-circle-exclamation me-1"></i> ${alert}</div>
       </c:if>
 
-      <form action="${pageContext.request.contextPath}/reset-password" method="post">
+      <form action="${pageContext.request.contextPath}/reset-password" method="post" class="needs-validation" novalidate>
         <div class="mb-3">
           <label class="form-label fw-semibold small">Mã xác nhận OTP 6 chữ số</label>
-          <input type="text" id="resetOtpInput" name="otp" maxlength="6" class="form-control text-center fw-bold fs-5" placeholder="Nhập 6 số OTP từ Email" required autofocus>
+          <input type="text" id="resetOtpInput" name="otp" maxlength="6" pattern="^[0-9]{6}$"
+                 value="${oldOtp}" class="form-control text-center fw-bold fs-5 ${not empty errors.otp ? 'is-invalid' : ''}"
+                 placeholder="Nhập 6 số OTP từ Email" required autofocus>
+          <div class="invalid-feedback">
+            ${not empty errors.otp ? errors.otp : 'Mã OTP phải gồm đúng 6 chữ số.'}
+          </div>
         </div>
 
         <div class="mb-3">
           <label class="form-label fw-semibold small">Mật khẩu mới</label>
-          <input type="password" name="newPassword" class="form-control" placeholder="Nhập mật khẩu mới" required>
+          <input type="password" id="newPassInput" name="newPassword" minlength="6"
+                 class="form-control ${not empty errors.newPassword ? 'is-invalid' : ''}"
+                 placeholder="Nhập mật khẩu mới tối thiểu 6 ký tự" required>
+          <div class="invalid-feedback">
+            ${not empty errors.newPassword ? errors.newPassword : 'Mật khẩu mới phải có ít nhất 6 ký tự.'}
+          </div>
         </div>
 
         <div class="mb-4">
           <label class="form-label fw-semibold small">Xác nhận mật khẩu mới</label>
-          <input type="password" name="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu mới" required>
+          <input type="password" id="confirmPassInput" name="confirmPassword" minlength="6"
+                 class="form-control ${not empty errors.confirmPassword ? 'is-invalid' : ''}"
+                 placeholder="Nhập lại mật khẩu mới" required>
+          <div class="invalid-feedback">
+            ${not empty errors.confirmPassword ? errors.confirmPassword : 'Vui lòng xác nhận lại mật khẩu mới.'}
+          </div>
         </div>
 
         <button type="submit" class="btn-auth w-100">
@@ -121,7 +135,26 @@
         resetToast.classList.add('hide-toast');
       }, 3500);
     }
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          const np = document.getElementById('newPassInput');
+          const cp = document.getElementById('confirmPassInput');
+          if (np && cp && np.value !== cp.value) {
+            cp.setCustomValidity('Mật khẩu xác nhận không khớp.');
+          } else if (cp) {
+            cp.setCustomValidity('');
+          }
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
   </script>
 </body>
 </html>
-

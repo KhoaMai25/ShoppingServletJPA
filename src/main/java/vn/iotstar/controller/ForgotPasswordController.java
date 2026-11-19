@@ -7,12 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Map;
 import vn.iotstar.entity.User;
 import vn.iotstar.service.IUserService;
 import vn.iotstar.service.impl.UserServiceImpl;
 import vn.iotstar.util.Constant;
 import vn.iotstar.util.EmailUtils;
 import vn.iotstar.util.PasswordUtils;
+import vn.iotstar.util.ValidationUtils;
 
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = {"/forgot-password", "/reset-password"})
@@ -38,8 +40,11 @@ public class ForgotPasswordController extends HttpServlet {
 
         if (url.contains("/forgot-password")) {
             String emailOrUser = req.getParameter("email");
-            if (emailOrUser == null || emailOrUser.trim().isEmpty()) {
-                req.setAttribute("alert", "Vui lòng nhập địa chỉ Email hoặc Tên đăng nhập!");
+            Map<String, String> errors = ValidationUtils.validateForgotPassword(emailOrUser);
+            if (!errors.isEmpty()) {
+                req.setAttribute("errors", errors);
+                req.setAttribute("oldEmail", emailOrUser);
+                req.setAttribute("alert", errors.get("email"));
                 req.getRequestDispatcher(Constant.Path.FORGOT_PASSWORD).forward(req, resp);
                 return;
             }
@@ -50,6 +55,9 @@ public class ForgotPasswordController extends HttpServlet {
             }
 
             if (user == null) {
+                errors.put("email", "Không tìm thấy tài khoản nào khớp với Email hoặc Tên đăng nhập này.");
+                req.setAttribute("errors", errors);
+                req.setAttribute("oldEmail", emailOrUser);
                 req.setAttribute("alert", "Không tìm thấy tài khoản nào khớp với thông tin bạn nhập!");
                 req.getRequestDispatcher(Constant.Path.FORGOT_PASSWORD).forward(req, resp);
                 return;
@@ -73,14 +81,11 @@ public class ForgotPasswordController extends HttpServlet {
             String newPassword = req.getParameter("newPassword");
             String confirmPassword = req.getParameter("confirmPassword");
 
-            if (otp == null || otp.trim().isEmpty() || newPassword == null || newPassword.trim().isEmpty()) {
-                req.setAttribute("alert", "Vui lòng nhập đầy đủ mã OTP và mật khẩu mới!");
-                req.getRequestDispatcher(Constant.Path.RESET_PASSWORD).forward(req, resp);
-                return;
-            }
-
-            if (confirmPassword != null && !newPassword.equals(confirmPassword)) {
-                req.setAttribute("alert", "Mật khẩu xác nhận không khớp!");
+            Map<String, String> errors = ValidationUtils.validateResetPassword(otp, newPassword, confirmPassword);
+            if (!errors.isEmpty()) {
+                req.setAttribute("errors", errors);
+                req.setAttribute("oldOtp", otp);
+                req.setAttribute("alert", "Vui lòng kiểm tra lại mã OTP và mật khẩu mới!");
                 req.getRequestDispatcher(Constant.Path.RESET_PASSWORD).forward(req, resp);
                 return;
             }
@@ -104,6 +109,9 @@ public class ForgotPasswordController extends HttpServlet {
                 session.setAttribute("flashSuccess", "Đặt lại mật khẩu mới thành công! Mời bạn đăng nhập.");
                 resp.sendRedirect(req.getContextPath() + "/login");
             } else {
+                errors.put("otp", "Mã xác nhận OTP không đúng hoặc đã hết hạn.");
+                req.setAttribute("errors", errors);
+                req.setAttribute("oldOtp", otp);
                 req.setAttribute("alert", "Mã xác nhận OTP không đúng hoặc đã hết hạn!");
                 req.getRequestDispatcher(Constant.Path.RESET_PASSWORD).forward(req, resp);
             }

@@ -58,12 +58,17 @@
         <div class="alert alert-danger py-2 small rounded-3"><i class="fa fa-circle-exclamation me-1"></i> ${alert}</div>
       </c:if>
 
-      <form action="${pageContext.request.contextPath}/forgot-password" method="post">
+      <form action="${pageContext.request.contextPath}/forgot-password" method="post" class="needs-validation" novalidate>
         <div class="mb-4">
           <label class="form-label fw-semibold small">Email hoặc Tên đăng nhập</label>
-          <div class="input-group">
+          <div class="input-group has-validation">
             <span class="input-group-text bg-light"><i class="fa fa-envelope text-muted"></i></span>
-            <input type="text" name="email" class="form-control" value="24110027@student.hcmute.edu.vn" placeholder="24110027@student.hcmute.edu.vn" required>
+            <input type="text" name="email" class="form-control ${not empty errors.email ? 'is-invalid' : ''}"
+                   value="${not empty oldEmail ? oldEmail : '24110027@student.hcmute.edu.vn'}"
+                   placeholder="24110027@student.hcmute.edu.vn" minlength="3" required>
+            <div class="invalid-feedback">
+              ${not empty errors.email ? errors.email : 'Vui lòng nhập Email hoặc Tên đăng nhập hợp lệ.'}
+            </div>
           </div>
         </div>
 
@@ -79,5 +84,20 @@
       </form>
     </div>
   </div>
+  <script>
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+  </script>
 </body>
 </html>
