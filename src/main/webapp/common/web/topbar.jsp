@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<c:if test="${empty requestScope._tzTopbarRendered}">
+<c:set var="_tzTopbarRendered" value="true" scope="request" />
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
   :root {
@@ -57,7 +59,7 @@
     text-decoration: none;
     font-weight: 600;
     font-size: 0.9rem;
-    padding: 8px 14px;
+    padding: 8px 13px;
     border-radius: 10px;
     transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     display: inline-flex;
@@ -70,21 +72,28 @@
     transform: translateY(-1px);
   }
   .tz-user-pill {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff !important;
+    padding: 5px 14px 5px 6px;
     border-radius: 999px;
     font-size: 0.88rem;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .tz-user-pill:hover {
+    background: rgba(255, 255, 255, 0.24);
+    transform: translateY(-1px);
   }
   .tz-user-avatar {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
+    object-fit: cover;
     background: linear-gradient(135deg, #38bdf8, #818cf8);
     display: inline-flex;
     align-items: center;
@@ -165,3 +174,4 @@
     </div>
   </div>
 </div>
+</c:if>
