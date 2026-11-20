@@ -22,7 +22,7 @@
         <ul class="list-unstyled small d-flex flex-column gap-2 mb-0">
           <li><a href="${pageContext.request.contextPath}/home" class="text-white-50 text-decoration-none">Trang chủ cửa hàng</a></li>
           <li><a href="${pageContext.request.contextPath}/video" class="text-white-50 text-decoration-none">Kênh Video công nghệ</a></li>
-          <li><a href="${pageContext.request.contextPath}/login" class="text-white-50 text-decoration-none">Tài khoản thành viên</a></li>
+          <li><a href="${pageContext.request.contextPath}/profile" class="text-white-50 text-decoration-none">Hồ sơ cá nhân</a></li>
         </ul>
       </div>
       <div class="col-6 col-lg-4">

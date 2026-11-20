@@ -145,6 +145,9 @@
         <a href="${pageContext.request.contextPath}/admin/users" class="tz-nav-link">
           <i class="fa fa-users-gear"></i> Tài khoản & Mật khẩu
         </a>
+        <a href="${pageContext.request.contextPath}/profile" class="tz-nav-link">
+          <i class="fa fa-id-badge"></i> Hồ sơ cá nhân
+        </a>
       </div>
     </div>
     <div>
@@ -161,10 +164,20 @@
         </c:when>
         <c:otherwise>
           <div class="d-flex align-items-center gap-2 flex-wrap">
-            <span class="tz-user-pill">
-              <span class="tz-user-avatar">K</span>
+            <a href="${pageContext.request.contextPath}/profile" class="tz-user-pill" title="Cập nhật hồ sơ cá nhân">
+              <c:choose>
+                <c:when test="${not empty sessionScope.account.avatar and sessionScope.account.avatar.startsWith('http')}">
+                  <img src="${sessionScope.account.avatar}" class="tz-user-avatar" alt="Avatar">
+                </c:when>
+                <c:when test="${not empty sessionScope.account.avatar}">
+                  <img src="${pageContext.request.contextPath}/image?fname=${sessionScope.account.avatar}" class="tz-user-avatar" alt="Avatar">
+                </c:when>
+                <c:otherwise>
+                  <span class="tz-user-avatar">K</span>
+                </c:otherwise>
+              </c:choose>
               <span>${sessionScope.account.fullName}</span>
-            </span>
+            </a>
             <a href="${pageContext.request.contextPath}/logout" class="tz-btn-logout">
               <i class="fa fa-power-off"></i> Đăng xuất
             </a>

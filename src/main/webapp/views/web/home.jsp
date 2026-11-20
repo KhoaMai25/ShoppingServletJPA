@@ -412,11 +412,11 @@
             <a href="#featuredProducts" class="btn-cta-gold">
               <i class="fa fa-bag-shopping"></i> Mua sắm ngay
             </a>
+            <a href="${pageContext.request.contextPath}/profile" class="btn-cta-light">
+              <i class="fa fa-user-pen"></i> Cập nhật Hồ sơ
+            </a>
             <a href="${pageContext.request.contextPath}/video" class="btn-cta-light">
               <i class="fa fa-circle-play"></i> Xem tất cả Video
-            </a>
-            <a href="${pageContext.request.contextPath}/admin/videos" class="btn-cta-light">
-              <i class="fa fa-film"></i> Quản lý Video
             </a>
           </div>
         </div>
