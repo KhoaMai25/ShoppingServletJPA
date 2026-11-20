@@ -25,8 +25,11 @@ Dự án xây dựng hệ thống thương mại điện tử & kênh Video đá
      - **4.5. Upload file bằng Multipart (`@MultipartConfig`)**: Tải ảnh đại diện danh mục, Poster video, tệp MP4 và servlet mẫu `/multiPartServlet`.
   5. **Cấu hình SiteMesh Decorator 3 với Template Bootstrap 5 (`sitemesh3.xml`, `web.jsp`, `admin.jsp`)**:
      - Quản lý bố cục giao diện đồng nhất với `ConfigurableSiteMeshFilter` (`header.jsp`, `topbar.jsp`, `footer.jsp`).
-  6. **Validation toàn diện cho tất cả các FORM (`login`, `register`, `forgetpassword`, `insert`, `edit`)**:
+  6. **Validation toàn diện cho tất cả các FORM (`login`, `register`, `forgetpassword`, `insert`, `edit`, `profile`)**:
      - Kiểm tra hợp lệ dữ liệu cả phía Server (`ValidationUtils` & Jakarta Bean Validation) và phía Client (`Bootstrap 5 Form Validation`).
+  7. **Quản lý Hồ sơ cá nhân User (`/profile`, `/profile/verify-email`) với SiteMesh Decorator 3**:
+     - Cập nhật `fullname`, `phone`, tải ảnh đại diện (`images`) lên **Cloudinary bằng Multipart** (`CloudinaryUtils`).
+     - Khi đổi sang **Email mới**, hệ thống tự động gửi mã **OTP 6 chữ số đến Email mới** để xác nhận thành công trước khi cập nhật.
 
 ---
 
